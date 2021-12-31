@@ -13,3 +13,4 @@ $ pip install -r requirements.txt
 
 # Showcase
 
+![Showcase](showcase.gif)

@@ -1,4 +1,4 @@
-# Nitro-Gen-Checker
+# Nitro Generator and Checker
 A powerfull script that generates nitro codes for Discord and checks if they work
 
 ![GitHub all releases](https://img.shields.io/github/downloads/ReflexTheLegend/Nitro-Gen-Checker/total?style=plastic)

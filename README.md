@@ -2,8 +2,7 @@
 A powerfull script that generates nitro codes for Discord and checks if they work
 
 ![GitHub all releases](https://img.shields.io/github/downloads/ReflexTheLegend/Nitro-Gen-Checker/total?style=plastic)
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ReflexTheLegend/Nitro-Gen-Checker?style=plastic)
-
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/ReflexTheLegend/Nitro-Generator-N-Checker)
 # How to run
 
 ```py

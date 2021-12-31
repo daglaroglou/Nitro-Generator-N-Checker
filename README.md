@@ -15,7 +15,7 @@ $ pip install -r requirements.txt
 
 ![Showcase](showcase.gif)
 
-## Packages used
+## Modules used
 
 >- requests
 >- random

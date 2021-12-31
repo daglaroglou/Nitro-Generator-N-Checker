@@ -14,3 +14,12 @@ $ pip install -r requirements.txt
 # Showcase
 
 ![Showcase](showcase.gif)
+
+## Packages used
+
+>- requests
+>- random
+>- termcolor
+>- colorama
+>- pypresence
+>- psutil 

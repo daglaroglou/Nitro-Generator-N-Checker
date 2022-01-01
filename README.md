@@ -22,3 +22,4 @@ $ pip install -r requirements.txt
 >- colorama
 >- pypresence
 >- psutil 
+>- threading

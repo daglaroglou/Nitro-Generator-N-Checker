@@ -23,3 +23,6 @@ $ pip install -r requirements.txt
 >- pypresence
 >- psutil 
 >- threading
+
+### Do you want to contribute?
+> DM me on Discord! (R3FL3X#1337)

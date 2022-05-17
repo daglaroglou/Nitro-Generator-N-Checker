@@ -6,8 +6,13 @@ A powerfull script that generates nitro codes for Discord and checks if they wor
 # How to run
 
 ```py
-$ pip install -r requirements.txt
+pip install -r requirements.txt
 ```
+or
+```py
+pip3 install requirements.txt
+```
+
 **WORKS ONLY WITH PYTHON 3.5 AND ABOVE**
 
 # Showcase

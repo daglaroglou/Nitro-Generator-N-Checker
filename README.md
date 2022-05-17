@@ -5,10 +5,12 @@ A powerfull script that generates nitro codes for Discord and checks if they wor
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/ReflexTheLegend/Nitro-Generator-N-Checker)
 # How to run
 
+Windows
 ```py
 pip install -r requirements.txt
 ```
-or
+
+Linux
 ```py
 pip3 install requirements.txt
 ```

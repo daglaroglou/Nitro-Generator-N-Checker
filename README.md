@@ -19,7 +19,7 @@ pip3 install requirements.txt
 
 # Showcase
 
-
+![Showcase](demo.gif)
 
 ## Modules used
 

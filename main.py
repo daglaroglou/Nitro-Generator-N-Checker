@@ -1,54 +1,108 @@
-import requests
-import random
-import string
-import time
-from colorama import init
-from termcolor import *
-from pypresence import *
-import psutil
-import threading
-import pyautogui
+try:
+    import os
+    import requests
+    import random
+    import sys
+    import string
+    import time
+    import colorama
+    import psutil
+    import threading
+    from random import choice
+    from colorama import Fore
+    from pypresence import *
+    from bs4 import BeautifulSoup
+    from datetime import datetime
+except ImportError:
+    os.system('pip install requests random sys string time colorama psutil threading random datetime bs4 pypresence')
+    print('Please re-run the program and install requirements.txt')
+    input()
 
-init()
+colorama.init()
 
-client_id = '926434489054400522'  # Application ID
-RPC = Presence(client_id,pipe=0)  # Initialize the client class
-RPC.connect() # Start the handshake loop
-pyautogui.hotkey('f11')
+valids = 0
+invalids = 0
+totals = 0
+
+def proxy_generator():
+    response = requests.get("https://sslproxies.org/")
+    soup = BeautifulSoup(response.content, 'html5lib')
+    proxy = {'https': choice(list(map(lambda x:x[0]+':'+x[1], list(zip(map(lambda x:x.text, soup.findAll('td')[::8]), map(lambda x:x.text, soup.findAll('td')[1::8]))))))}
+        
+    return proxy
+
+def data_scraper(request_method, url, **kwargs):
+    while True:
+        try:
+            proxy = proxy_generator()
+            response = requests.request(request_method, url, proxies=proxy, timeout=7, **kwargs)
+            break
+        except:
+            now = datetime.now()
+            current_time = now.strftime("%H:%M:%S")
+            print(f"{Fore.LIGHTBLACK_EX}{current_time} - Dead proxy, fetching a new one...")
+            pass
+    return response
+
+client_id = '926434489054400522'
+RPC = Presence(client_id, pipe=0)
+RPC.connect()
 
 def rpc():
     start_time = time.time()
 
     while True:
-        cpu_per = round(psutil.cpu_percent(),1) # Get CPU Usage
-        mem = psutil.virtual_memory() # Get RAM Usage
+        cpu_per = round(psutil.cpu_percent(),1)
         mem_per = round(psutil.virtual_memory().percent,1)
         RPC.update(start=start_time, details="RAM: "+str(mem_per)+"%", state="CPU: "+str(cpu_per)+"%", large_image="nitro_512x512", small_image="dc", large_text="Generating...", small_text="v1.5", buttons=[{"label": "GitHub", "url": "https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker"}, {"label": "Download", "url": "https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker/releases/download/1.5.1/Nitro.Generator.N.Checker.exe"},])  # Set the presence
         time.sleep(1)
 
+def typingPrint(text):
+  for character in text:
+    sys.stdout.write(character)
+    sys.stdout.flush()
+    time.sleep(0.05)
+
+def typingInput(text):
+  for character in text:
+    sys.stdout.write(character)
+    sys.stdout.flush()
+    time.sleep(0.05)
+  value = input()  
+  return value
+
 def main():
-    print(colored("""
- ███▄    █  ██▓▄▄▄█████▓ ██▀███   ▒█████       ▄████ ▓█████  ███▄    █ ▓█████  ██▀███   ▄▄▄     ▄▄▄█████▓ ▒█████   ██▀███      ███▄    █     ▄████▄   ██░ ██ ▓█████  ▄████▄   ██ ▄█▀▓█████  ██▀███  
- ██ ▀█   █ ▓██▒▓  ██▒ ▓▒▓██ ▒ ██▒▒██▒  ██▒    ██▒ ▀█▒▓█   ▀  ██ ▀█   █ ▓█   ▀ ▓██ ▒ ██▒▒████▄   ▓  ██▒ ▓▒▒██▒  ██▒▓██ ▒ ██▒    ██ ▀█   █    ▒██▀ ▀█  ▓██░ ██▒▓█   ▀ ▒██▀ ▀█   ██▄█▒ ▓█   ▀ ▓██ ▒ ██▒
-▓██  ▀█ ██▒▒██▒▒ ▓██░ ▒░▓██ ░▄█ ▒▒██░  ██▒   ▒██░▄▄▄░▒███   ▓██  ▀█ ██▒▒███   ▓██ ░▄█ ▒▒██  ▀█▄ ▒ ▓██░ ▒░▒██░  ██▒▓██ ░▄█ ▒   ▓██  ▀█ ██▒   ▒▓█    ▄ ▒██▀▀██░▒███   ▒▓█    ▄ ▓███▄░ ▒███   ▓██ ░▄█ ▒
-▓██▒  ▐▌██▒░██░░ ▓██▓ ░ ▒██▀▀█▄  ▒██   ██░   ░▓█  ██▓▒▓█  ▄ ▓██▒  ▐▌██▒▒▓█  ▄ ▒██▀▀█▄  ░██▄▄▄▄██░ ▓██▓ ░ ▒██   ██░▒██▀▀█▄     ▓██▒  ▐▌██▒   ▒▓▓▄ ▄██▒░▓█ ░██ ▒▓█  ▄ ▒▓▓▄ ▄██▒▓██ █▄ ▒▓█  ▄ ▒██▀▀█▄  
-▒██░   ▓██░░██░  ▒██▒ ░ ░██▓ ▒██▒░ ████▓▒░   ░▒▓███▀▒░▒████▒▒██░   ▓██░░▒████▒░██▓ ▒██▒ ▓█   ▓██▒ ▒██▒ ░ ░ ████▓▒░░██▓ ▒██▒   ▒██░   ▓██░   ▒ ▓███▀ ░░▓█▒░██▓░▒████▒▒ ▓███▀ ░▒██▒ █▄░▒████▒░██▓ ▒██▒
-░ ▒░   ▒ ▒ ░▓    ▒ ░░   ░ ▒▓ ░▒▓░░ ▒░▒░▒░     ░▒   ▒ ░░ ▒░ ░░ ▒░   ▒ ▒ ░░ ▒░ ░░ ▒▓ ░▒▓░ ▒▒   ▓▒█░ ▒ ░░   ░ ▒░▒░▒░ ░ ▒▓ ░▒▓░   ░ ▒░   ▒ ▒    ░ ░▒ ▒  ░ ▒ ░░▒░▒░░ ▒░ ░░ ░▒ ▒  ░▒ ▒▒ ▓▒░░ ▒░ ░░ ▒▓ ░▒▓░
-░ ░░   ░ ▒░ ▒ ░    ░      ░▒ ░ ▒░  ░ ▒ ▒░      ░   ░  ░ ░  ░░ ░░   ░ ▒░ ░ ░  ░  ░▒ ░ ▒░  ▒   ▒▒ ░   ░      ░ ▒ ▒░   ░▒ ░ ▒░   ░ ░░   ░ ▒░     ░  ▒    ▒ ░▒░ ░ ░ ░  ░  ░  ▒   ░ ░▒ ▒░ ░ ░  ░  ░▒ ░ ▒░
-   ░   ░ ░  ▒ ░  ░        ░░   ░ ░ ░ ░ ▒     ░ ░   ░    ░      ░   ░ ░    ░     ░░   ░   ░   ▒    ░      ░ ░ ░ ▒    ░░   ░       ░   ░ ░    ░         ░  ░░ ░   ░   ░        ░ ░░ ░    ░     ░░   ░ 
-         ░  ░              ░         ░ ░           ░    ░  ░         ░    ░  ░   ░           ░  ░            ░ ░     ░                 ░    ░ ░       ░  ░  ░   ░  ░░ ░      ░  ░      ░  ░   ░     
-                                                                                                                                            ░                       ░                               
-""", 'green'))
+    global valids
+    global invalids
+    global totals
+    print(f"""{Fore.LIGHTBLUE_EX}
+              .~!!!!!!!!!!!!!!!!!!!!!~~^:.          
+            .!77777777777777777777777777!^.       
+              ......:!777777????????7777777~.     
+                     ^777?J?77777777?J?777777^    
+ .??!    ^!!!!!!!!!!!77JJ!!?{Fore.LIGHTBLACK_EX}PB###BG5{Fore.LIGHTBLUE_EX}?!7JJ77777~     888b    888  .d8888b.  888b    888  .d8888b.
+ .^~:    ::::::::^!77?Y?^Y{Fore.LIGHTBLACK_EX}#@&######&&#{Fore.LIGHTBLUE_EX}J^JJ77777~    8888b   888 d88P  Y88b 8888b   888 d88P  Y88b
+                  ^77J?:G{Fore.LIGHTBLACK_EX}@&#GGGGGGGB&&@{Fore.LIGHTBLUE_EX}5:JJ77777.   88888b  888 888    888 88888b  888 888    888 
+            .^~^^~77?Y~?{Fore.LIGHTBLACK_EX}@&#GGGGGGGGGB&&&{Fore.LIGHTBLUE_EX}~!Y?7777^   888Y88b 888 888        888Y88b 888 888         
+            .~~!7777?Y~?{Fore.LIGHTBLACK_EX}@&#GGGGGGGGGB&&{Fore.LIGHTBLUE_EX}@~!Y?7777^   888 Y88b888 888  88888 888 Y88b888 888        
+               :77777J?:G{Fore.LIGHTBLACK_EX}@&#GGGGGGGB&&@{Fore.LIGHTBLUE_EX}5:JJ77777.   888  Y88888 888    888 888  Y88888 888    888 
+                !7777?Y?^5{Fore.LIGHTBLACK_EX}&@&######&&#{Fore.LIGHTBLUE_EX}J^JJ77777~    888   Y8888 Y88b  d88P 888   Y8888 Y88b  d88P 
+                .!77777JJ!!{Fore.LIGHTBLACK_EX}JPB####B5{Fore.LIGHTBLUE_EX}?!7JJ77777~     888    Y888  "Y8888P88 888    Y888  "Y8888P"  
+                 .~777777JJ?77777777?J?777777^   {Fore.LIGHTBLACK_EX}Coded by: {Fore.GREEN
+                 }R3FL3X#1337{Fore.LIGHTBLACK_EX} | Licenced under {Fore.GREEN}MIT Licence{Fore.LIGHTBLUE_EX}
+                   :!7777777????????7777777~.     
+                     :^!7777777777777777!^.       
+                        .:^~!!!!!!!!~^:.        
+""")
     time.sleep(2)
-    print(colored("Ey wazzup!", 'green'))
+    typingPrint(f'Welcome back {os.getlogin()},\n')
     time.sleep(0.3)
-    print(colored("Press F11 to exit full screen", 'green'))
-    time.sleep(0.2)
-    print(colored('Input How Many Codes to Generate and Check: ', 'blue'), end='') 
+    typingPrint(f'{Fore.YELLOW}Input how many codes you wanna generate: ')
+    print('\n>>> ', end='')
     num = int(input())
 
     with open("Nitro Codes.txt", "w", encoding='utf-8') as file:
-        print(colored("Your nitro codes are being generated, please be patient if you entered the high number!", 'yellow'))
+        typingPrint(f"{Fore.YELLOW}Your nitro codes are being generated, please be patient if you entered high number!\n")
 
         start = time.time()
 
@@ -60,24 +114,47 @@ def main():
 
             file.write(f"https://discord.gift/{code}\n")
 
-        print(colored(f"Generated {num} codes | Time taken: {time.time() - start}\n", 'yellow'))
+        print(f"{Fore.YELLOW}Generated {num} codes | Time taken: {time.time() - start}s\n")
 
     with open("Nitro Codes.txt") as file:
         for line in file.readlines():
             nitro = line.strip("\n")
 
-            url = "https://discordapp.com/api/v6/entitlements/gift-codes/" + nitro + "?with_application=false&with_subscription_plan=true"
+            url = "https://discordapp.com/api/v9/entitlements/gift-codes/" + nitro + "?with_application=false&with_subscription_plan=true"
 
-            r = requests.get(url)
+            r = data_scraper('http', url)
 
-            if r.status_code == 200:
-                print(colored(f" Valid | {nitro} ", 'green'))
+            if r == '<Response [200]>':
+                now = datetime.now()
+                current_time = now.strftime("%H:%M:%S")
+                print(f"{Fore.GREEN}{current_time} - [ VALID ] | {nitro} \n")
+                valids+=1
+                totals+=1
                 break
+            elif r == '<Response [429]>':
+                now = datetime.now()
+                current_time = now.strftime("%H:%M:%S")
+                print(f"{Fore.YELLOW}{current_time} - [ RATE LIMIT ] | {nitro} \n")
+                valids+=1
+                totals+=1
+                time.sleep(1)
             else:
-                print(colored(f" Invalid | {nitro} ", 'red'))
-
-    input("\nYou have generated, Now press the [X] to close this, you'll get valid codes in Valid Codes.txt if you see its empty then you got no luck, generate 20 million codes for luck or else.")
-
+                now = datetime.now()
+                current_time = now.strftime("%H:%M:%S")
+                print(f"{Fore.RED}{current_time} - [ INVALID ] | {nitro}")
+                invalids+=1
+                totals+=1
+                time.sleep(0.5)
+    time.sleep(2)                
+    print(f'{Fore.LIGHTBLACK_EX}\nResults:')
+    time.sleep(0.5)
+    print(f'{Fore.LIGHTBLACK_EX} Valid: {Fore.GREEN}{valids}')
+    time.sleep(0.5)
+    print(f'{Fore.LIGHTBLACK_EX} Invalid: {Fore.RED}{invalids}')
+    time.sleep(0.5)
+    print(f'{Fore.LIGHTBLACK_EX} Total: {Fore.WHITE}{totals}')
+    time.sleep(0.4)
+    input(f"\n{Fore.LIGHTBLACK_EX}You have generated, now press the {Fore.RED}[X] {Fore.LIGHTBLACK_EX}to close this, you'll get valid codes in Valid Codes.txt if you see its empty then you got no luck, generate 20 million codes for luck or else.")
 
 if __name__ == "__rpc__":
     rpc()

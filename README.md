@@ -14,8 +14,11 @@ Run the .exe
 Linux
 ```py
 cd your_directory
+
 pip3 install requirements.txt
+
 chmod +x Nitro-Generator-N-Checker
+
 ./Nitro-Generator-N-Checker
 ```
 

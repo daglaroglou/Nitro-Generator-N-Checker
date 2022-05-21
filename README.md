@@ -23,13 +23,18 @@ pip3 install requirements.txt
 
 ## Modules used
 
+>- os
 >- requests
 >- random
->- termcolor
+>- sys
+>- string
+>- time
 >- colorama
->- pypresence
->- psutil 
+>- psutil
 >- threading
+>- pypresence
+>- bs4
+>- datetime
 
 ### Do you want to contribute?
 > DM me on Discord! (R3FL3X#1337)

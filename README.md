@@ -8,11 +8,15 @@ A powerfull script that generates nitro codes for Discord and checks if they wor
 Windows
 ```py
 pip install -r requirements.txt
+Run the .exe
 ```
 
 Linux
 ```py
+cd your_directory
 pip3 install requirements.txt
+chmod +x Nitro-Generator-N-Checker
+./Nitro-Generator-N-Checker
 ```
 
 **WORKS ONLY WITH PYTHON 3.5 AND ABOVE**

@@ -7,7 +7,10 @@ A powerfull script that generates nitro codes for Discord and checks if they wor
 
 Windows
 ```py
+cd your_directory
+
 pip install -r requirements.txt
+
 Run the .exe
 ```
 

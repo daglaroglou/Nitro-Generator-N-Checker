@@ -1,8 +1,6 @@
-os>0
+
 requests>0
 random>0
-sys>0
-string>0
 time>0
 colorama>0
 psutil>0

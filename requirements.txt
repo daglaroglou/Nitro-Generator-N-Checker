@@ -1,10 +1,4 @@
-
-requests>0
-random>0
-time>0
-colorama>0
-psutil>0
-threading>0
-pypresence>0
-bs4>0
-datetime>0
+requests>=2.27.1
+colorama>=0.4.4
+psutil>=5.9.0
+pypresence>=4.2.1

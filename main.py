@@ -14,7 +14,7 @@ try:
     from bs4 import BeautifulSoup
     from datetime import datetime
 except ImportError:
-    os.system('pip install requests colorama psutil datetime bs4 pypresence py-cpuinfo')
+    os.system('pip install requests colorama psutil datetime bs4 pypresence')
     print('Please re-run the program and install requirements.txt')
     time.sleep(5)
     exit()

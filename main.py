@@ -14,9 +14,10 @@ try:
     from bs4 import BeautifulSoup
     from datetime import datetime
 except ImportError:
-    os.system('pip install requests random sys string time colorama psutil threading random datetime bs4 pypresence')
+    os.system('pip install requests colorama psutil datetime bs4 pypresence py-cpuinfo')
     print('Please re-run the program and install requirements.txt')
-    input()
+    time.sleep(5)
+    exit()
 
 colorama.init()
 
@@ -28,7 +29,6 @@ def proxy_generator():
     response = requests.get("https://sslproxies.org/")
     soup = BeautifulSoup(response.content, 'html5lib')
     proxy = {'https': choice(list(map(lambda x:x[0]+':'+x[1], list(zip(map(lambda x:x.text, soup.findAll('td')[::8]), map(lambda x:x.text, soup.findAll('td')[1::8]))))))}
-        
     return proxy
 
 def data_scraper(request_method, url, **kwargs):

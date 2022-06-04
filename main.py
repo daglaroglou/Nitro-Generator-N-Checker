@@ -54,7 +54,7 @@ def rpc():
     while True:
         cpu_per = round(psutil.cpu_percent(),1)
         mem_per = round(psutil.virtual_memory().percent,1)
-        RPC.update(start=start_time, details="RAM: "+str(mem_per)+"%", state="CPU: "+str(cpu_per)+"%", large_image="nitro_512x512", small_image="dc", large_text="Generating...", small_text="v1.6", buttons=[{"label": "GitHub", "url": "https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker"}, {"label": "Download", "url": "https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker/releases/"},])  # Set the presence
+        RPC.update(start=start_time, details="RAM: "+str(mem_per)+"%", state="CPU: "+str(cpu_per)+"%", large_image="nitro_512x512", small_image="dc", large_text="Generating...", small_text="v1.6", buttons=[{"label": "GitHub", "url": "https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker"}, {"label": "Download", "url": "https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker/releases/latest"},])  # Set the presence
         time.sleep(1)
 
 def typingPrint(text):

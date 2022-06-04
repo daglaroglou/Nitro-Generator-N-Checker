@@ -43,7 +43,7 @@ chmod +x Nitro-Generator-N-Checker
 >- psutil
 >- threading
 >- pypresence
->- bs4
+>- beautifulsoup4 (AKA bs4)
 >- datetime
 
 ### Do you want to contribute?

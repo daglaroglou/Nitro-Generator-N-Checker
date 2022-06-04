@@ -161,5 +161,8 @@ if __name__ == "__rpc__":
 
 t1=threading.Thread(target=rpc)
 t2=threading.Thread(target=main)
-t1.start()
-t2.start()
+if "discord.exe" in (i.name() for i in psutil.process_iter()):
+    t1.start()
+    t2.start()
+else:
+    t2.start()

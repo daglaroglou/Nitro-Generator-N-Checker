@@ -1,6 +1,3 @@
-from xml.etree.ElementPath import ops
-
-
 try:
     import os
     import requests

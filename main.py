@@ -1,3 +1,6 @@
+from xml.etree.ElementPath import ops
+
+
 try:
     import os
     import requests
@@ -8,22 +11,23 @@ try:
     import colorama
     import psutil
     import threading
+    import platform
     from random import choice
     from colorama import Fore
     from pypresence import *
     from bs4 import BeautifulSoup
     from datetime import datetime
 except ImportError:
-    os.system('pip install requests colorama psutil datetime bs4 pypresence')
+    os.system('pip install requests random sys string time colorama psutil threading random datetime bs4 pypresence')
     print('Please re-run the program and install requirements.txt')
-    time.sleep(5)
-    exit()
+    input()
 
 colorama.init()
 
 valids = 0
 invalids = 0
 totals = 0
+ifrpc = 'no'
 
 def proxy_generator():
     response = requests.get("https://sslproxies.org/")
@@ -50,11 +54,19 @@ RPC.connect()
 
 def rpc():
     start_time = time.time()
-
     while True:
+        global totals
+        global valids
+        global invalids
         cpu_per = round(psutil.cpu_percent(),1)
         mem_per = round(psutil.virtual_memory().percent,1)
-        RPC.update(start=start_time, details="RAM: "+str(mem_per)+"%", state="CPU: "+str(cpu_per)+"%", large_image="nitro_512x512", small_image="dc", large_text="Generating...", small_text="v1.6", buttons=[{"label": "GitHub", "url": "https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker"}, {"label": "Download", "url": "https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker/releases/latest"},])  # Set the presence
+        opsys = platform.platform()
+        if opsys.startswith('Linux'):
+            opsys = 'Linux'
+        else:
+            opsys = 'Windows'
+        arch = platform.architecture()[0]
+        RPC.update(start=start_time, details=f"Invalid: {invalids}, Valid: {valids}", state="CPU: "+str(cpu_per)+"%, RAM: "+str(mem_per)+"%", large_text=f'{opsys}, {arch}' ,large_image="https://3.bp.blogspot.com/-TFOwcFJKD2M/XB6bLZZFvoI/AAAAAAAAArQ/NedhZKh9r38rN3PwyJtfu9MBY5EsNXZCgCEwYBhgL/s200/discordbadge.gif", buttons=[{"label": "GitHub", "url": "https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker"}, {"label": "Download", "url": "https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker/releases/latest"}])
         time.sleep(1)
 
 def typingPrint(text):
@@ -71,10 +83,21 @@ def typingInput(text):
   value = input()  
   return value
 
+def askforrpc():
+    print(f'{Fore.LIGHTBLACK_EX}[{Fore.YELLOW}?{Fore.LIGHTBLACK_EX}] Do you want Discord RPC?: ({Fore.WHITE}yes{Fore.LIGHTBLACK_EX}/{Fore.WHITE}no{Fore.LIGHTBLACK_EX})\n>>> ', end='')
+    time.sleep(0.5)
+    global ifrpc
+    ifrpc = str(input())
+    print(f'{Fore.GREEN}Cool!')
+    time.sleep(1)
+    return ifrpc
+askforrpc()
+
 def main():
     global valids
     global invalids
     global totals
+    global ifrpc
     print(f"""{Fore.LIGHTBLUE_EX}
               .~!!!!!!!!!!!!!!!!!!!!!~~^:.          
             .!77777777777777777777777777!^.       
@@ -89,7 +112,7 @@ def main():
                 !7777?Y?^5{Fore.LIGHTBLACK_EX}&@&######&&#{Fore.LIGHTBLUE_EX}J^JJ77777~    888   Y8888 Y88b  d88P 888   Y8888 Y88b  d88P 
                 .!77777JJ!!{Fore.LIGHTBLACK_EX}JPB####B5{Fore.LIGHTBLUE_EX}?!7JJ77777~     888    Y888  "Y8888P88 888    Y888  "Y8888P"  
                  .~777777JJ?77777777?J?777777^   {Fore.LIGHTBLACK_EX}Coded by: {Fore.GREEN
-                 }R3FL3X#1337{Fore.LIGHTBLACK_EX} | Licenced under {Fore.GREEN}MIT Licence{Fore.LIGHTBLUE_EX}
+                 }R3FL3X#1337{Fore.LIGHTBLACK_EX} | Licenced under: {Fore.GREEN}MIT Licence{Fore.LIGHTBLUE_EX}
                    :!7777777????????7777777~.     
                      :^!7777777777777777!^.       
                         .:^~!!!!!!!!~^:.        
@@ -156,13 +179,15 @@ def main():
     time.sleep(0.4)
     input(f"\n{Fore.LIGHTBLACK_EX}You have generated, now press the {Fore.RED}[X] {Fore.LIGHTBLACK_EX}to close this, you'll get valid codes in Valid Codes.txt if you see its empty then you got no luck, generate 20 million codes for luck or else.")
 
-if __name__ == "__rpc__":
-    rpc()
-
-t1=threading.Thread(target=rpc)
-t2=threading.Thread(target=main)
-if "discord.exe" in (i.name() for i in psutil.process_iter()):
+if ifrpc == 'yes' or ifrpc == 'y' or ifrpc == 'Y' or ifrpc == 'YES':
+    t1=threading.Thread(target=rpc)
+    t2=threading.Thread(target=main)
     t1.start()
     t2.start()
-else:
+elif ifrpc == 'no' or ifrpc == 'n' or ifrpc == 'N' or ifrpc == 'NO':
+    t2=threading.Thread(target=main)
     t2.start()
+else:
+    print(f'{Fore.RED}Please elect between {Fore.GREEN}yes {Fore.RED}and {Fore.GREEN}no{Fore.RED}!')
+    time.sleep(1)
+    exit()

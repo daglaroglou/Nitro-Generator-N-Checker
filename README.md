@@ -18,7 +18,7 @@ Linux
 ```py
 cd your_directory
 
-pip3 install requirements.txt
+pip3 install -r requirements.txt
 
 chmod +x Nitro-Generator-N-Checker
 

@@ -9,13 +9,14 @@ try:
     import psutil
     import threading
     import platform
+    import webbrowser
     from random import choice
     from colorama import Fore
     from pypresence import *
     from bs4 import BeautifulSoup
     from datetime import datetime
 except ImportError:
-    os.system('pip install requests random sys string time colorama psutil threading random datetime bs4 pypresence')
+    os.system('pip install requests colorama psutil datetime bs4 pypresence')
     print('Please re-run the program and install requirements.txt')
     input()
 
@@ -25,9 +26,75 @@ valids = 0
 invalids = 0
 totals = 0
 ifrpc = 'no'
+ifredeemer = 'no'
+
+def clear():
+    if platform.platform().startswith('Windows') == True:
+        return os.system('cls')
+    else:
+        return os.system('clear')
+
+def connection():
+    url = "http://www.google.com"
+    timeout = 5
+    try:
+        requests.get(url, timeout=timeout)
+        return True
+    except (requests.ConnectionError, requests.Timeout) as exception:
+        return False
+
+if connection() == False:
+    print(f'{Fore.LIGHTBLACK_EX}[{Fore.RED}X{Fore.LIGHTBLACK_EX}] You need internet connection to run this program!')
+    time.sleep(5)
+    exit()
+
+def selfupdate():
+    print(f'{Fore.LIGHTBLACK_EX}[{Fore.RED}#{Fore.LIGHTBLACK_EX}] Checking for updates...')
+    latest = requests.get("https://api.github.com/repos/ReflexTheLegend/Nitro-Generator-N-Checker/releases/latest")
+    latest = latest.json()['tag_name']
+    latest = float(latest)
+    time.sleep(2)
+    if latest > 2.0:
+        print(f'{Fore.LIGHTBLACK_EX}[{Fore.GREEN}${Fore.LIGHTBLACK_EX}] {Fore.GREEN}Good news! {Fore.RESET}NGNC has an update! {Fore.RED}2.0 {Fore.RESET}-> {Fore.GREEN}{latest}{Fore.LIGHTBLACK_EX}\n')
+        cl = requests.get("https://api.github.com/repos/ReflexTheLegend/Nitro-Generator-N-Checker/releases/latest")
+        cl = cl.json()['body']
+        print('\033[1m' + f'Changelog: \n{Fore.RESET}')
+        print(cl)
+        time.sleep(3)
+        print(f'\n{Fore.LIGHTBLACK_EX}[{Fore.YELLOW}?{Fore.LIGHTBLACK_EX}] Do you want to download it? ({Fore.WHITE}yes{Fore.LIGHTBLACK_EX}/{Fore.WHITE}no{Fore.LIGHTBLACK_EX})')
+        ask = str(input('>>> '))
+        if ask == 'yes' or ask == 'y' or ask == 'YES' or ask == 'Y':
+            print(f'{Fore.GREEN}Cool!')
+            time.sleep(2)
+            webbrowser.open_new_tab('https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker/releases/latest')
+            time.sleep(2)
+            exit()
+        elif ask == 'no' or ask == 'n' or ask == 'NO' or ask == 'N':
+            print(f'{Fore.GREEN}Cool!')
+            time.sleep(2)
+            clear()
+    else:
+        print(f'{Fore.LIGHTBLACK_EX}[{Fore.GREEN}+{Fore.LIGHTBLACK_EX}] You are up to date! Starting...')
+        time.sleep(3)
+        clear()
+selfupdate()
+
+def logacc(var):
+    try:
+        print(f'{Fore.LIGHTBLUE_EX}Attempting to log in...')
+        accinfo = requests.get("https://discordapp.com/api/v9/users/@me", headers={"content-type": "application/json", "authorization": var}).json()
+        accname = accinfo['username']
+        acctag = accinfo['discriminator']
+        print(f'{Fore.GREEN}Logged in as {accname}#{acctag}')
+        time.sleep(2)
+    except:
+        print(f'{Fore.RED}Failed to log in, skipping Instant Redeemer...')
+        ifredeemer = 'no'
+        time.sleep(2)
+        return ifredeemer
 
 def proxy_generator():
-    response = requests.get("https://sslproxies.org/")
+    response = requests.get("https://sslproxies.org/") or requests.get('https://free-proxy-list.net/')
     soup = BeautifulSoup(response.content, 'html5lib')
     proxy = {'https': choice(list(map(lambda x:x[0]+':'+x[1], list(zip(map(lambda x:x.text, soup.findAll('td')[::8]), map(lambda x:x.text, soup.findAll('td')[1::8]))))))}
     return proxy
@@ -45,9 +112,31 @@ def data_scraper(request_method, url, **kwargs):
             pass
     return response
 
+def process_exists(processName):
+    for proc in psutil.process_iter():
+        try:
+            if processName.lower() in proc.name().lower():
+                return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return False;
+
 client_id = '926434489054400522'
-RPC = Presence(client_id, pipe=0)
-RPC.connect()
+if platform.platform().startswith('Linux'):
+    if process_exists('Discord') or process_exists('DiscordPTB') or process_exists('DiscordCanary') == True:
+        RPC = Presence(client_id, pipe=0)
+        RPC.connect()
+    else:
+        ifrpc = 'no'
+elif platform.platform().startswith('Windows'):
+    if process_exists('Discord.exe') or process_exists('DiscordPTB.exe') or process_exists('DiscordCanary.exe') == True:
+        RPC = Presence(client_id, pipe=0)
+        RPC.connect()
+    else:
+        ifrpc = 'no'
+else:
+    ifrpc = 'no'
+    time.sleep(2)
 
 def rpc():
     start_time = time.time()
@@ -56,7 +145,7 @@ def rpc():
         global valids
         global invalids
         cpu_per = round(psutil.cpu_percent(),1)
-        mem_per = round(psutil.virtual_memory().percent,1)
+        mem_per = round(psutil.virtual_memory().percent, 1)
         opsys = platform.platform()
         if opsys.startswith('Linux'):
             opsys = 'Linux'
@@ -88,13 +177,45 @@ def askforrpc():
     print(f'{Fore.GREEN}Cool!')
     time.sleep(1)
     return ifrpc
-askforrpc()
+if platform.platform().startswith('Windows') and process_exists('Discord.exe') or process_exists('DiscordPTB.exe') or process_exists('DiscordCanary.exe'):
+    askforrpc()
+elif platform.platform().startswith('Linux') and process_exists('Discord') or process_exists('DiscordPTB') or process_exists('DiscordCanary'):
+    askforrpc()
+else:
+    print(f'{Fore.RED}Discord is not running, skipping RPC...')
+    clear()
+    ifrpc = 'no'
+    time.sleep(2)
+
+def redeemer(var, nitrocode):
+    json = {
+        'channel_id': None,
+        'payment_source_id': None
+        }
+    requests.post("https://discordapp.com/api/v9/entitlements/gift-codes/"+nitrocode+"/redeem", headers={"Content-Type": "application/json", "authorization": var, 'Accept': 'application/json'}, json=json)
+
+def askforredeemer():
+    print(f'{Fore.LIGHTBLACK_EX}[{Fore.YELLOW}?{Fore.LIGHTBLACK_EX}] Do you want Instant Redeemer: ({Fore.WHITE}yes{Fore.LIGHTBLACK_EX}/{Fore.WHITE}no{Fore.LIGHTBLACK_EX})\n>>> ', end='')
+    time.sleep(0.5)
+    ifredeemer = str(input())
+    print(f'{Fore.GREEN}Cool!')
+    time.sleep(1)
+    return ifredeemer
+
+aggrees = ['yes', 'y', 'Y', 'YES']
+if askforredeemer() in aggrees:
+    token2 = input(f'{Fore.YELLOW}Input account token: ')
+    token2 = str(token2)
+    logacc(token2)
 
 def main():
     global valids
     global invalids
     global totals
     global ifrpc
+    global ifredeemer
+    global num
+    clear()
     print(f"""{Fore.LIGHTBLUE_EX}
               .~!!!!!!!!!!!!!!!!!!!!!~~^:.          
             .!77777777777777777777777777!^.       
@@ -134,7 +255,7 @@ def main():
 
             file.write(f"https://discord.gift/{code}\n")
 
-        print(f"{Fore.YELLOW}Generated {num} codes | Time taken: {time.time() - start}s\n")
+        print(f"{Fore.YELLOW}Generated {num} codes | Time taken: {round(time.time() - start, 2)}s\n")
 
     with open("Nitro Codes.txt") as file:
         for line in file.readlines():
@@ -145,23 +266,30 @@ def main():
             r = data_scraper('http', url)
 
             if r == '<Response [200]>':
+                num-=1
                 now = datetime.now()
                 current_time = now.strftime("%H:%M:%S")
-                print(f"{Fore.GREEN}{current_time} - [ VALID ] | {nitro} \n")
+                print(f"{Fore.GREEN}{current_time} - [ VALID ] | {nitro} {Fore.YELLOW}(Left: {num})\n")
                 valids+=1
                 totals+=1
-                break
+                if ifredeemer == 'yes':
+                    redeemer(token2, nitro)
+                else:
+                    vf = open('Valid Codes.txt', 'w')
+                    vf.write(f'https://discord.gift/{nitro}'+'\n')
+                    vf.close()
             elif r == '<Response [429]>':
                 now = datetime.now()
                 current_time = now.strftime("%H:%M:%S")
-                print(f"{Fore.YELLOW}{current_time} - [ RATE LIMIT ] | {nitro} \n")
+                print(f"{Fore.YELLOW}{current_time} - [ RATE LIMIT ] | {nitro} {Fore.YELLOW}(Left: {num})\n")
                 valids+=1
                 totals+=1
                 time.sleep(1)
             else:
+                num-=1
                 now = datetime.now()
                 current_time = now.strftime("%H:%M:%S")
-                print(f"{Fore.RED}{current_time} - [ INVALID ] | {nitro}")
+                print(f"{Fore.RED}{current_time} - [ INVALID ] | {nitro} {Fore.YELLOW}(Left: {num})")
                 invalids+=1
                 totals+=1
                 time.sleep(0.5)

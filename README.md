@@ -13,7 +13,7 @@ cd your_directory
 
 pip install -r requirements.txt
 
-Run the .exe
+Run the NGNC.exe
 ```
 
 Linux
@@ -22,9 +22,9 @@ cd your_directory
 
 pip3 install -r requirements.txt
 
-chmod +x Nitro-Generator-N-Checker
+chmod +x NGNC
 
-./Nitro-Generator-N-Checker
+./NGNC
 ```
 
 **WORKS ONLY WITH PYTHON 3.5 AND ABOVE**

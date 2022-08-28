@@ -48,6 +48,7 @@ chmod +x NGNC
 >- beautifulsoup4 (AKA bs4)
 >- datetime
 >- webbrowser
+>- platform
 
 ### Do you want to contribute?
 > DM me on Discord! (R3FL3X#1337)

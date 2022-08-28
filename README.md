@@ -54,5 +54,7 @@ chmod +x NGNC
 
 ### ToS
 This is totally against Discord's ToS and Guidelines.
+
 Use at your own risk!
+
 I'm not responsible for any account ban- termination!

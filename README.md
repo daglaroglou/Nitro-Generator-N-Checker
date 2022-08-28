@@ -45,6 +45,7 @@ chmod +x Nitro-Generator-N-Checker
 >- pypresence
 >- beautifulsoup4 (AKA bs4)
 >- datetime
+>- webbrowser
 
 ### Do you want to contribute?
 > DM me on Discord! (R3FL3X#1337)

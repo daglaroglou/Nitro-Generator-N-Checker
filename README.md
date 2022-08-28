@@ -51,3 +51,8 @@ chmod +x NGNC
 
 ### Do you want to contribute?
 > DM me on Discord! (R3FL3X#1337)
+
+### ToS
+This is totally against Discord's ToS and Guidelines.
+Use at your own risk!
+I'm not responsible for any account ban- termination!

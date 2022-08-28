@@ -3,6 +3,8 @@ A powerfull script that generates nitro codes for Discord and checks if they wor
 
 ![GitHub all releases](https://img.shields.io/github/downloads/ReflexTheLegend/Nitro-Gen-Checker/total?style=plastic)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/ReflexTheLegend/Nitro-Generator-N-Checker)
+<br>
+![NGNC Logo](https://i.imgur.com/3hp33ft.png)
 # How to run
 
 Windows

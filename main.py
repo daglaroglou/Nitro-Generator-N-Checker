@@ -103,7 +103,7 @@ def data_scraper(request_method, url, **kwargs):
     while True:
         try:
             proxy = proxy_generator()
-            response = requests.request(request_method, url, proxies=proxy, timeout=7, **kwargs)
+            response = requests.request(request_method, url, proxies=proxy, timeout=10, **kwargs)
             break
         except:
             now = datetime.now()

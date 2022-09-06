@@ -51,7 +51,7 @@ chmod +x NGNC
 >- platform
 
 ### Do you want to contribute?
-> DM me on Discord! (R3FL3X#1337)
+> Join the [Telegram Group](https://t.me/NGNC2022).
 
 ### ToS
 This is totally against Discord's ToS and Guidelines.

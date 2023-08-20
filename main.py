@@ -50,13 +50,13 @@ if connection() == False:
 
 def selfupdate():
     print(f'{Fore.LIGHTBLACK_EX}[{Fore.RED}#{Fore.LIGHTBLACK_EX}] Checking for updates...')
-    latest = requests.get("https://api.github.com/repos/ReflexTheLegend/Nitro-Generator-N-Checker/releases/latest")
+    latest = requests.get("https://api.github.com/repos/daglaroglou/Nitro-Generator-N-Checker/releases/latest")
     latest = latest.json()['tag_name']
     latest = float(latest)
     time.sleep(2)
     if latest > 2.0:
         print(f'{Fore.LIGHTBLACK_EX}[{Fore.GREEN}${Fore.LIGHTBLACK_EX}] {Fore.GREEN}Good news! {Fore.RESET}NGNC has an update! {Fore.RED}2.0 {Fore.RESET}-> {Fore.GREEN}{latest}{Fore.LIGHTBLACK_EX}\n')
-        cl = requests.get("https://api.github.com/repos/ReflexTheLegend/Nitro-Generator-N-Checker/releases/latest")
+        cl = requests.get("https://api.github.com/repos/daglaroglou/Nitro-Generator-N-Checker/releases/latest")
         cl = cl.json()['body']
         print('\033[1m' + f'Changelog: \n{Fore.RESET}')
         print(cl)

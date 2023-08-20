@@ -66,7 +66,7 @@ def selfupdate():
         if ask == 'yes' or ask == 'y' or ask == 'YES' or ask == 'Y':
             print(f'{Fore.GREEN}Cool!')
             time.sleep(2)
-            webbrowser.open_new_tab('https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker/releases/latest')
+            webbrowser.open_new_tab('https://github.com/daglaroglou/Nitro-Generator-N-Checker/releases/latest')
             time.sleep(2)
             exit()
         elif ask == 'no' or ask == 'n' or ask == 'NO' or ask == 'N':

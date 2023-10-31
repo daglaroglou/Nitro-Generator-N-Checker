@@ -49,6 +49,8 @@ chmod +x NGNC
 >- datetime
 >- webbrowser
 >- platform
+>- discord-webhook
+>- lxml
 
 ### Do you want to contribute?
 > Join the [Telegram Group](https://t.me/NGNC2022).

@@ -1,3 +1,4 @@
+
 try:
     import os
     import requests
@@ -15,8 +16,9 @@ try:
     from pypresence import *
     from bs4 import BeautifulSoup
     from datetime import datetime
+    from discord_webhook import DiscordWebhook, DiscordEmbed
 except ImportError:
-    os.system('pip install requests colorama psutil datetime bs4 pypresence')
+    os.system('pip install requests colorama psutil datetime bs4 pypresence discord-webhook lxml --break-system-packages')
     print('Please re-run the program and install requirements.txt')
     input()
 
@@ -27,6 +29,7 @@ invalids = 0
 totals = 0
 ifrpc = 'no'
 ifredeemer = 'no'
+ifwh = 'no'
 
 def clear():
     if platform.platform().startswith('Windows') == True:
@@ -44,9 +47,27 @@ def connection():
         return False
 
 if connection() == False:
-    print(f'{Fore.LIGHTBLACK_EX}[{Fore.RED}X{Fore.LIGHTBLACK_EX}] You need internet connection to run this program!')
+    print(f'{Fore.LIGHTBLACK_EX}[{Fore.RED}!{Fore.LIGHTBLACK_EX}] You need internet connection to run this program!')
     time.sleep(5)
     exit()
+
+def webhook_notification(code, time, wh):
+    webhook = DiscordWebhook(url=wh, username="NGNC")
+    embed = DiscordEmbed(
+        title="Nitro found!", description="A valid nitro code was generated", color="00ff00"
+    )
+    embed.set_author(
+        name="NGNC",
+        url="https://github.com/daglaroglou/Nitro-Generator-N-Checker",
+        icon_url="https://i.imgur.com/oxLslJQ.png",
+    )
+    embed.set_footer(text="Credits: @daglaroglou")
+    embed.set_timestamp()
+    embed.add_embed_field(name="Code", value=str(code), inline=False)
+    embed.add_embed_field(name="Link", value=f"https://discord.gift/{code}", inline=False)
+    embed.add_embed_field(name="Time", value=time, inline=False)
+    webhook.add_embed(embed)
+    webhook.execute()
 
 def selfupdate():
     print(f'{Fore.LIGHTBLACK_EX}[{Fore.RED}#{Fore.LIGHTBLACK_EX}] Checking for updates...')
@@ -95,7 +116,7 @@ def logacc(var):
 
 def proxy_generator():
     response = requests.get("https://sslproxies.org/") or requests.get('https://free-proxy-list.net/')
-    soup = BeautifulSoup(response.content, 'html5lib')
+    soup = BeautifulSoup(response.content, 'lxml')
     proxy = {'https': choice(list(map(lambda x:x[0]+':'+x[1], list(zip(map(lambda x:x.text, soup.findAll('td')[::8]), map(lambda x:x.text, soup.findAll('td')[1::8]))))))}
     return proxy
 
@@ -169,6 +190,15 @@ def typingInput(text):
   value = input()  
   return value
 
+def askforwebhook():
+    print(f'{Fore.LIGHTBLACK_EX}[{Fore.YELLOW}?{Fore.LIGHTBLACK_EX}] Do you want Webhook notifications?: ({Fore.WHITE}yes{Fore.LIGHTBLACK_EX}/{Fore.WHITE}no{Fore.LIGHTBLACK_EX})\n>>> ', end='')
+    time.sleep(0.5)
+    global ifwh
+    ifwh = str(input())
+    print(f'{Fore.GREEN}Cool!')
+    time.sleep(1)
+    return ifwh
+
 def askforrpc():
     print(f'{Fore.LIGHTBLACK_EX}[{Fore.YELLOW}?{Fore.LIGHTBLACK_EX}] Do you want Discord RPC?: ({Fore.WHITE}yes{Fore.LIGHTBLACK_EX}/{Fore.WHITE}no{Fore.LIGHTBLACK_EX})\n>>> ', end='')
     time.sleep(0.5)
@@ -208,6 +238,10 @@ if askforredeemer() in aggrees:
     token2 = str(token2)
     logacc(token2)
 
+if askforwebhook() in aggrees:
+    wh = input(f'{Fore.YELLOW}Input webhook link: ')
+    wh = str(wh)
+
 def main():
     global valids
     global invalids
@@ -230,7 +264,7 @@ def main():
                 !7777?Y?^5{Fore.LIGHTBLACK_EX}&@&######&&#{Fore.LIGHTBLUE_EX}J^JJ77777~    888   Y8888 Y88b  d88P 888   Y8888 Y88b  d88P 
                 .!77777JJ!!{Fore.LIGHTBLACK_EX}JPB####B5{Fore.LIGHTBLUE_EX}?!7JJ77777~     888    Y888  "Y8888P88 888    Y888  "Y8888P"  
                  .~777777JJ?77777777?J?777777^   {Fore.LIGHTBLACK_EX}Coded by: {Fore.GREEN
-                 }R3FL3X#1337{Fore.LIGHTBLACK_EX} | Licenced under: {Fore.GREEN}MIT Licence{Fore.LIGHTBLUE_EX}
+                 }daglaroglou{Fore.LIGHTBLACK_EX} | Licenced under: {Fore.GREEN}MIT Licence{Fore.LIGHTBLUE_EX}
                    :!7777777????????7777777~.     
                      :^!7777777777777777!^.       
                         .:^~!!!!!!!!~^:.        
@@ -272,12 +306,13 @@ def main():
                 print(f"{Fore.GREEN}{current_time} - [ VALID ] | {nitro} {Fore.YELLOW}(Left: {num})\n")
                 valids+=1
                 totals+=1
+                if ifwh == 'yes':
+                    webhook_notification(nitro, current_time)
                 if ifredeemer == 'yes':
                     redeemer(token2, nitro)
-                else:
-                    vf = open('Valid Codes.txt', 'w')
-                    vf.write(f'https://discord.gift/{nitro}'+'\n')
-                    vf.close()
+                vf = open('Valid Codes.txt', 'w')
+                vf.write(f'https://discord.gift/{nitro}'+'\n')
+                vf.close()
             elif r == '<Response [429]>':
                 now = datetime.now()
                 current_time = now.strftime("%H:%M:%S")

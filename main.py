@@ -74,8 +74,8 @@ def selfupdate():
     latest = latest.json()['tag_name']
     latest = float(latest)
     time.sleep(2)
-    if latest > 2.0:
-        print(f'{Fore.LIGHTBLACK_EX}[{Fore.GREEN}${Fore.LIGHTBLACK_EX}] {Fore.GREEN}Good news! {Fore.RESET}NGNC has an update! {Fore.RED}2.0 {Fore.RESET}-> {Fore.GREEN}{latest}{Fore.LIGHTBLACK_EX}\n')
+    if latest > 3.0:
+        print(f'{Fore.LIGHTBLACK_EX}[{Fore.GREEN}${Fore.LIGHTBLACK_EX}] {Fore.GREEN}Good news! {Fore.RESET}NGNC has an update! {Fore.RED}3.0 {Fore.RESET}-> {Fore.GREEN}{latest}{Fore.LIGHTBLACK_EX}\n')
         cl = requests.get("https://api.github.com/repos/daglaroglou/Nitro-Generator-N-Checker/releases/latest")
         cl = cl.json()['body']
         print('\033[1m' + f'Changelog: \n{Fore.RESET}')
@@ -172,7 +172,7 @@ def rpc():
         else:
             opsys = 'Windows'
         arch = platform.architecture()[0]
-        RPC.update(start=start_time, details=f"Invalid: {invalids}, Valid: {valids}", state="CPU: "+str(cpu_per)+"%, RAM: "+str(mem_per)+"%", large_text=f'{opsys}, {arch}' ,large_image="https://3.bp.blogspot.com/-TFOwcFJKD2M/XB6bLZZFvoI/AAAAAAAAArQ/NedhZKh9r38rN3PwyJtfu9MBY5EsNXZCgCEwYBhgL/s200/discordbadge.gif", buttons=[{"label": "GitHub", "url": "https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker"}, {"label": "Download", "url": "https://github.com/ReflexTheLegend/Nitro-Generator-N-Checker/releases/latest"}])
+        RPC.update(start=start_time, details=f"Invalid: {invalids}, Valid: {valids}", state="CPU: "+str(cpu_per)+"%, RAM: "+str(mem_per)+"%", large_text=f'{opsys}, {arch}' ,large_image="https://3.bp.blogspot.com/-TFOwcFJKD2M/XB6bLZZFvoI/AAAAAAAAArQ/NedhZKh9r38rN3PwyJtfu9MBY5EsNXZCgCEwYBhgL/s200/discordbadge.gif", buttons=[{"label": "GitHub", "url": "https://github.com/daglaroglou/Nitro-Generator-N-Checker"}, {"label": "Download", "url": "https://github.com/daglaroglou/Nitro-Generator-N-Checker/releases/latest"}])
         time.sleep(1)
 
 def typingPrint(text):
